@@ -126,20 +126,26 @@ static void LED_Blink(uint32_t Hdelay, uint32_t Ldelay) {
 }
 
 void I2C_Scan_Debug(void) {
-	printf("Scanning I2C bus...\r\n");
-	HAL_StatusTypeDef res;
+    printf("Scanning I2C bus...\r\n");
+    HAL_StatusTypeDef res;
 
-	for (uint16_t i = 0; i < 128; i++) {
-		// 7-bit 주소를 8-bit(Left Shift)로 변환하여 확인
-		res = HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, 10);
-		if (res == HAL_OK) {
-			char msg[32];
-			snprintf(msg, sizeof(msg), "Found: 0x%02X", (i << 1));
-			ST7789_DrawUser8x16(0, 48, msg, ST7789_GREEN, ST7789_BLACK); // 화면 0,0에 표시
-			return; // 찾으면 종료
-		}
-	}
-	ST7789_DrawUser8x16(0, 48, "No Device Found", ST7789_RED, ST7789_BLACK);
+    // 스캔 시작 전 I2C 상태 확인
+    uint32_t state = HAL_I2C_GetState(&hi2c1);
+    uint32_t error = HAL_I2C_GetError(&hi2c1);
+    char status_msg[64];
+    snprintf(status_msg, sizeof(status_msg), "St:%lu, Err:%lu", state, error);
+    ST7789_DrawUser8x16(0, 32, status_msg, ST7789_YELLOW, ST7789_BLACK);
+
+    for (uint16_t i = 0; i < 128; i++) {
+        res = HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, 10);
+        if (res == HAL_OK) {
+            char msg[32];
+            snprintf(msg, sizeof(msg), "Found: 0x%02X", (i << 1));
+            ST7789_DrawUser8x16(0, 48, msg, ST7789_GREEN, ST7789_BLACK);
+            return;
+        }
+    }
+    ST7789_DrawUser8x16(0, 48, "No Device Found", ST7789_RED, ST7789_BLACK);
 }
 /* USER CODE END 0 */
 
@@ -213,8 +219,10 @@ int main(void)
 	__HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_2,300);
 
 	ST7789_DrawUser8x16(0, 0, "Hello World", ST7789_WHITE, ST7789_BLACK);
-	HAL_GPIO_WritePin(XSHUT_GPIO_Port, XSHUT_Pin, GPIO_PIN_SET);
-	HAL_Delay(500); // 최소 2ms 이상 딜레이 필수
+	HAL_GPIO_WritePin(XSHUT_GPIO_Port, XSHUT_Pin, GPIO_PIN_RESET); // 1. 센서 끄기 (Reset)
+	HAL_Delay(100);                                                // 2. 잠시 대기 (방전)
+	HAL_GPIO_WritePin(XSHUT_GPIO_Port, XSHUT_Pin, GPIO_PIN_SET);   // 3. 센서 켜기 (Boot)
+	HAL_Delay(100);                                                // 4. 부팅 대기 (필수)
 
 	I2C_Scan_Debug();
 	HAL_Delay(2000); // 결과 확인할 시간 벌기
