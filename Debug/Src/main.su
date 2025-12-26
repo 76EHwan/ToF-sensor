@@ -1,0 +1,15 @@
+../Src/main.c:75:13:MPU_Config	24	static
+../Src/main.c:113:13:CPU_CACHE_Enable	24	static,ignoring_inline_asm
+../Src/main.c:121:13:LED_Blink	16	static
+../Src/main.c:142:6:I2C_Scan_Debug	56	static
+../Src/main.c:164:5:main	16	static
+../Src/main.c:259:6:SystemClock_Config	120	static
+../Src/main.c:329:6:PeriphCommonClock_Config	200	static
+../Src/main.c:353:9:BSP_VL53L4CX_Init	4	static
+../Src/main.c:357:9:BSP_VL53L4CX_DeInit	4	static
+../Src/main.c:362:9:BSP_VL53L4CX_WriteReg	24	static
+../Src/main.c:371:9:BSP_VL53L4CX_ReadReg	24	static
+../Src/main.c:379:9:BSP_VL53L4CX_GetTick	8	static
+../Src/main.c:383:13:VL53L4CX_Ranging_Init	112	static
+../Src/main.c:453:13:VL53L4CX_Ranging_Loop	24	static
+../Src/main.c:487:6:Error_Handler	8	static

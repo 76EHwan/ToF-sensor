@@ -1,0 +1,5 @@
+../Src/custom_flash.c:5:6:Custom_Flash_Unlock	8	static
+../Src/custom_flash.c:9:6:Custom_Flash_Lock	8	static
+../Src/custom_flash.c:13:6:Custom_Flash_Erase	32	static
+../Src/custom_flash.c:34:6:Custom_Flash_Write	32	static
+../Src/custom_flash.c:53:6:Custom_Flash_Read	24	static

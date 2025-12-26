@@ -1,0 +1,4 @@
+../Src/../MDK-ARM/Inc/custom_delay.h:24:24:Custom_Delay_Get_SysTick	8	static
+../Src/custom_switch.c:34:13:Custom_Switch_Init_ButtonState	24	static
+../Src/custom_switch.c:44:16:Custom_Switch_State_Machine	32	static
+../Src/custom_switch.c:102:9:Custom_Switch_Read	16	static

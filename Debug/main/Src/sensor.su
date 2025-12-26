@@ -1,0 +1,14 @@
+../main/Src/sensor.c:52:26:Battery_ADC_Read	8	static,ignoring_inline_asm
+../main/Src/sensor.c:71:6:Battery_LPTIM3_IRQ	8	static
+../main/Src/sensor.c:79:6:Battery_Test	4	static
+../main/Src/sensor.c:83:6:Battery_Start	8	static
+../main/Src/sensor.c:86:6:Battery_Stop	8	static
+../main/Src/sensor.c:90:6:Sensor_Start	8	static
+../main/Src/sensor.c:94:6:Sensor_Stop	8	static
+../main/Src/sensor.c:100:6:Sensor_Test_Menu	4	static
+../main/Src/sensor.c:106:6:TIM6_Sensor_IRQ	32	static
+../main/Src/sensor.c:169:6:Sensor_Test_Raw	4	static
+../main/Src/sensor.c:180:6:Sensor_Calibration	4	static
+../main/Src/sensor.c:193:6:Sensor_Normalized	4	static
+../main/Src/sensor.c:202:6:Sensor_State	4	static
+../main/Src/sensor.c:211:6:Position_Test	4	static

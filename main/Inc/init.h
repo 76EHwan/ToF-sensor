@@ -1,0 +1,28 @@
+/*
+ * init.h
+ *
+ *  Created on: Apr 23, 2025
+ *      Author: kth59
+ */
+
+#ifndef MAIN_INC_INIT_H_
+#define MAIN_INC_INIT_H_
+
+#include <stdint.h>
+#include "main.h"
+#include "LSM6DS3TR.h"
+
+
+void Init();
+void Custom_LCD_Clear();
+void Custom_LCD_Printf(int x, int y, const char *text, ...);
+
+
+
+typedef struct {
+	char name[10];
+	void (*func)(void);
+} menu_t;
+
+
+#endif /* MAIN_INC_INIT_H_ */

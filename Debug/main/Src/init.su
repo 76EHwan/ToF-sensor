@@ -1,0 +1,3 @@
+../main/Src/init.c:25:6:Setting	4	static
+../main/Src/init.c:40:6:Button_Test	16	static
+../main/Src/init.c:68:6:Init	8	static

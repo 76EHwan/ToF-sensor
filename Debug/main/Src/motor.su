@@ -1,0 +1,9 @@
+../main/Src/motor.c:65:6:Motor_Test	4	static
+../main/Src/motor.c:79:6:Motor_Start	4	static
+../main/Src/motor.c:135:6:Motor_Stop	4	static
+../main/Src/motor.c:147:6:Motor_LPTIM4_IRQ	4	static
+../main/Src/motor.c:184:6:Encoder_Test	16	static
+../main/Src/motor.c:201:6:Motor_Left_Gain_P	4	static
+../main/Src/motor.c:206:6:Motor_Left_Gain_I	4	static
+../main/Src/motor.c:211:6:Motor_Right_Gain_P	4	static
+../main/Src/motor.c:215:6:Motor_Right_Gain_I	4	static
