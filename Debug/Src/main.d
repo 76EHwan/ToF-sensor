@@ -42,27 +42,13 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hcd.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h ../Inc/adc.h \
  ../Inc/main.h ../Inc/lptim.h ../Inc/rtc.h ../Inc/spi.h ../Inc/tim.h \
- ../Inc/usart.h ../Inc/usb_otg.h ../Inc/gpio.h ../Inc/custom_bus.h \
- ../Inc/custom_conf.h ../Inc/custom_errno.h ../Src/dwt_delay.h \
+ ../Inc/usart.h ../Inc/usb_otg.h ../Inc/gpio.h ../Src/dwt_delay.h \
  ../Drivers/BSP/ST7789/st7789.h ../Drivers/BSP/ST7789/fonts.h \
  ../main/Inc/init.h ../main/Inc/LSM6DS3TR.h ../main/Inc/init.h \
  ../main/Inc/sensor.h ../main/Inc/../../MDK-ARM/Inc/lptim.h \
  ../main/Inc/../../MDK-ARM/Inc/main.h ../main/Inc/motor.h \
  ../main/Inc/drive.h ../main/Inc/../../MDK-ARM/Inc/custom_switch.h \
- ../main/Inc/../../MDK-ARM/Inc/custom_delay.h \
- ../Drivers/BSP/Components/vl53l4cx/vl53l4cx.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_def.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_ll_def.h \
- ../Drivers/BSP/Components/vl53l4cx/porting/vl53lx_platform_user_config.h \
- ../Drivers/BSP/Components/vl53l4cx/porting/vl53lx_platform_user_defines.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_error_codes.h \
- ../Drivers/BSP/Components/vl53l4cx/porting/vl53lx_types.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_register_structs.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_register_map.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_hist_structs.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_ll_device.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_dmax_structs.h \
- ../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_error_exceptions.h
+ ../main/Inc/../../MDK-ARM/Inc/custom_delay.h
 ../Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Inc/stm32h7xx_hal_conf.h:
@@ -115,9 +101,6 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 ../Inc/usart.h:
 ../Inc/usb_otg.h:
 ../Inc/gpio.h:
-../Inc/custom_bus.h:
-../Inc/custom_conf.h:
-../Inc/custom_errno.h:
 ../Src/dwt_delay.h:
 ../Drivers/BSP/ST7789/st7789.h:
 ../Drivers/BSP/ST7789/fonts.h:
@@ -131,16 +114,3 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 ../main/Inc/drive.h:
 ../main/Inc/../../MDK-ARM/Inc/custom_switch.h:
 ../main/Inc/../../MDK-ARM/Inc/custom_delay.h:
-../Drivers/BSP/Components/vl53l4cx/vl53l4cx.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_def.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_ll_def.h:
-../Drivers/BSP/Components/vl53l4cx/porting/vl53lx_platform_user_config.h:
-../Drivers/BSP/Components/vl53l4cx/porting/vl53lx_platform_user_defines.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_error_codes.h:
-../Drivers/BSP/Components/vl53l4cx/porting/vl53lx_types.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_register_structs.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_register_map.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_hist_structs.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_ll_device.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_dmax_structs.h:
-../Drivers/BSP/Components/vl53l4cx/modules/vl53lx_error_exceptions.h:

@@ -13,10 +13,9 @@ RM := rm -rf
 -include Startup/subdir.mk
 -include Src/subdir.mk
 -include Drivers/STM32H7xx_HAL_Driver/Src/subdir.mk
+-include Drivers/BSP/VL53L0X/Platform/Src/subdir.mk
+-include Drivers/BSP/VL53L0X/Core/Src/subdir.mk
 -include Drivers/BSP/ST7789/subdir.mk
--include Drivers/BSP/Components/vl53l4cx/porting/subdir.mk
--include Drivers/BSP/Components/vl53l4cx/modules/subdir.mk
--include Drivers/BSP/Components/vl53l4cx/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

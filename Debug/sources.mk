@@ -22,10 +22,9 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-Drivers/BSP/Components/vl53l4cx/modules \
-Drivers/BSP/Components/vl53l4cx/porting \
-Drivers/BSP/Components/vl53l4cx \
 Drivers/BSP/ST7789 \
+Drivers/BSP/VL53L0X/Core/Src \
+Drivers/BSP/VL53L0X/Platform/Src \
 Drivers/STM32H7xx_HAL_Driver/Src \
 Src \
 Startup \
