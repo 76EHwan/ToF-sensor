@@ -30,11 +30,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "custom_bus.h"
 #include "dwt_delay.h"
 #include "st7789.h"
 #include "init.h"
-#include "vl53l4cx.h"
 
 /* USER CODE END Includes */
 
@@ -419,7 +417,7 @@ static void VL53L4CX_Ranging_Init(void) {
 		// 초기화 실패 시 에러 코드 표시
 		char err_str[20];
 		snprintf(err_str, sizeof(err_str), "INIT ERR: %ld", status);
-		ST7789_DrawUser8x16(0, 16, err_str, ST7789_RED, ST7789_BLACK);
+		ST7789_DrawUser8x16(0, 64, err_str, ST7789_RED, ST7789_BLACK);
 		Error_Handler();
 	}
 
