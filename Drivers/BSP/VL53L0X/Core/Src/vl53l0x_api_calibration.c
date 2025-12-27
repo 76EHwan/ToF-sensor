@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright � 2016, STMicroelectronics International N.V.
+ * Copyright � 2016, STMicroelectronics International N.V.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,8 @@
 #include "vl53l0x_api.h"
 #include "vl53l0x_api_core.h"
 #include "vl53l0x_api_calibration.h"
+
+#include <string.h>  // <--- 이 줄을 추가하세요!
 
 #ifndef __KERNEL__
 #include <stdlib.h>

@@ -1,274 +1,117 @@
-/*******************************************************************************
-Copyright � 2015, STMicroelectronics International N.V.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of STMicroelectronics nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-NON-INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS ARE DISCLAIMED.
-IN NO EVENT SHALL STMICROELECTRONICS INTERNATIONAL N.V. BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-********************************************************************************/
-
-/**
- * @file VL53L0X_i2c.c
- *
- * Copyright (C) 2014 ST MicroElectronics
- *
- * provide variable word size byte/Word/dword VL6180x register access via i2c
- *
+/*
+ * vl53l0x_platform.c
+ * STM32 HAL Driver Implementation
  */
+
 #include "vl53l0x_platform.h"
-#include "vl53l0x_i2c_platform.h"
 #include "vl53l0x_api.h"
+#include "stm32h7xx_hal.h"  // H7 시리즈용 HAL 헤더 (사용 MCU에 맞게 변경)
 
-#define LOG_FUNCTION_START(fmt, ... )           _LOG_FUNCTION_START(TRACE_MODULE_PLATFORM, fmt, ##__VA_ARGS__)
-#define LOG_FUNCTION_END(status, ... )          _LOG_FUNCTION_END(TRACE_MODULE_PLATFORM, status, ##__VA_ARGS__)
-#define LOG_FUNCTION_END_FMT(status, fmt, ... ) _LOG_FUNCTION_END_FMT(TRACE_MODULE_PLATFORM, status, fmt, ##__VA_ARGS__)
+// main.c 등에서 정의된 I2C 핸들을 가져옵니다.
+// 만약 이름이 hi2c1이 아니라면 CubeMX 설정에 맞게 변경하세요.
+extern I2C_HandleTypeDef hi2c1;
+//#define VL53L0X_I2C_HANDLE &hi2c1  // 주석 해제 후 사용하거나, 아래 코드에서 직접 &hi2c1 사용
 
-/**
- * @def I2C_BUFFER_CONFIG
- *
- * @brief Configure Device register I2C access
- *
- * @li 0 : one GLOBAL buffer \n
- *   Use one global buffer of MAX_I2C_XFER_SIZE byte in data space \n
- *   This solution is not multi-Device compliant nor multi-thread cpu safe \n
- *   It can be the best option for small 8/16 bit MCU without stack and limited ram  (STM8s, 80C51 ...)
- *
- * @li 1 : ON_STACK/local \n
- *   Use local variable (on stack) buffer \n
- *   This solution is multi-thread with use of i2c resource lock or mutex see VL6180x_GetI2CAccess() \n
- *
- * @li 2 : User defined \n
- *    Per Device potentially dynamic allocated. Requires VL6180x_GetI2cBuffer() to be implemented.
- * @ingroup Configuration
- */
-#define I2C_BUFFER_CONFIG 1
-/** Maximum buffer size to be used in i2c */
-#define VL53L0X_MAX_I2C_XFER_SIZE   64 /* Maximum buffer size to be used in i2c */
+// I2C 타임아웃 (ms)
+#define I2C_TIME_OUT_BASE   10
+#define I2C_TIME_OUT_BYTE   1
 
-#if I2C_BUFFER_CONFIG == 0
-    /* GLOBAL config buffer */
-    uint8_t i2c_global_buffer[VL53L0X_MAX_I2C_XFER_SIZE];
+// --- 필수 구현 함수들 ---
 
-    #define DECL_I2C_BUFFER
-    #define VL53L0X_GetLocalBuffer(Dev, n_byte)  i2c_global_buffer
+// 1. 데이터 여러 바이트 쓰기
+VL53L0X_Error VL53L0X_WriteMulti(VL53L0X_DEV Dev, uint8_t index, uint8_t *pdata, uint32_t count) {
+    // VL53L0X_Dev_t 구조체에서 I2C 주소 가져오기
+    uint8_t deviceAddress = Dev->I2cDevAddr;
 
-#elif I2C_BUFFER_CONFIG == 1
-    /* ON STACK */
-    #define DECL_I2C_BUFFER  uint8_t LocBuffer[VL53L0X_MAX_I2C_XFER_SIZE];
-    #define VL53L0X_GetLocalBuffer(Dev, n_byte)  LocBuffer
-#elif I2C_BUFFER_CONFIG == 2
-    /* user define buffer type declare DECL_I2C_BUFFER  as access  via VL53L0X_GetLocalBuffer */
-    #define DECL_I2C_BUFFER
-#else
-#error "invalid I2C_BUFFER_CONFIG "
-#endif
-
-
-#define VL53L0X_I2C_USER_VAR         /* none but could be for a flag var to get/pass to mutex interruptible  return flags and try again */
-#define VL53L0X_GetI2CAccess(Dev)    /* todo mutex acquire */
-#define VL53L0X_DoneI2CAcces(Dev)    /* todo mutex release */
-
-
-VL53L0X_Error VL53L0X_LockSequenceAccess(VL53L0X_DEV Dev){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-
-    return Status;
-}
-
-VL53L0X_Error VL53L0X_UnlockSequenceAccess(VL53L0X_DEV Dev){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-
-    return Status;
-}
-
-// the ranging_sensor_comms.dll will take care of the page selection
-VL53L0X_Error VL53L0X_WriteMulti(VL53L0X_DEV Dev, uint8_t index, uint8_t *pdata, uint32_t count){
-
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int = 0;
-	uint8_t deviceAddress;
-
-    if (count>=VL53L0X_MAX_I2C_XFER_SIZE){
-        Status = VL53L0X_ERROR_INVALID_PARAMS;
+    // HAL I2C 메모리 쓰기 함수 호출
+    // (핸들, 주소, 레지스터주소, 주소크기(1Byte), 데이터포인터, 데이터길이, 타임아웃)
+    if (HAL_I2C_Mem_Write(&hi2c1, deviceAddress, index, I2C_MEMADD_SIZE_8BIT, pdata, count, 1000) != HAL_OK) {
+        return VL53L0X_ERROR_CONTROL_INTERFACE;
     }
-
-	deviceAddress = Dev->I2cDevAddr;
-
-	status_int = VL53L0X_write_multi(deviceAddress, index, pdata, count);
-
-	if (status_int != 0)
-		Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
+    return VL53L0X_ERROR_NONE;
 }
 
-// the ranging_sensor_comms.dll will take care of the page selection
-VL53L0X_Error VL53L0X_ReadMulti(VL53L0X_DEV Dev, uint8_t index, uint8_t *pdata, uint32_t count){
-    VL53L0X_I2C_USER_VAR
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-	uint8_t deviceAddress;
+// 2. 데이터 여러 바이트 읽기
+VL53L0X_Error VL53L0X_ReadMulti(VL53L0X_DEV Dev, uint8_t index, uint8_t *pdata, uint32_t count) {
+    uint8_t deviceAddress = Dev->I2cDevAddr;
 
-    if (count>=VL53L0X_MAX_I2C_XFER_SIZE){
-        Status = VL53L0X_ERROR_INVALID_PARAMS;
+    if (HAL_I2C_Mem_Read(&hi2c1, deviceAddress, index, I2C_MEMADD_SIZE_8BIT, pdata, count, 1000) != HAL_OK) {
+        return VL53L0X_ERROR_CONTROL_INTERFACE;
     }
-
-    deviceAddress = Dev->I2cDevAddr;
-
-	status_int = VL53L0X_read_multi(deviceAddress, index, pdata, count);
-
-	if (status_int != 0)
-		Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
+    return VL53L0X_ERROR_NONE;
 }
 
-
-VL53L0X_Error VL53L0X_WrByte(VL53L0X_DEV Dev, uint8_t index, uint8_t data){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-	uint8_t deviceAddress;
-
-    deviceAddress = Dev->I2cDevAddr;
-
-	status_int = VL53L0X_write_byte(deviceAddress, index, data);
-
-	if (status_int != 0)
-		Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
+// 3. 1바이트 쓰기 Wrapper
+VL53L0X_Error VL53L0X_WrByte(VL53L0X_DEV Dev, uint8_t index, uint8_t data) {
+    return VL53L0X_WriteMulti(Dev, index, &data, 1);
 }
 
-VL53L0X_Error VL53L0X_WrWord(VL53L0X_DEV Dev, uint8_t index, uint16_t data){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-	uint8_t deviceAddress;
-
-    deviceAddress = Dev->I2cDevAddr;
-
-	status_int = VL53L0X_write_word(deviceAddress, index, data);
-
-	if (status_int != 0)
-		Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
+// 4. 2바이트(Word) 쓰기 Wrapper (Big Endian 처리 필요할 수 있음 -> I2C_Mem_Write가 자동 처리하거나 배열로 변환)
+VL53L0X_Error VL53L0X_WrWord(VL53L0X_DEV Dev, uint8_t index, uint16_t data) {
+    uint8_t buff[2];
+    buff[0] = (data >> 8) & 0xFF; // MSB
+    buff[1] = data & 0xFF;        // LSB
+    return VL53L0X_WriteMulti(Dev, index, buff, 2);
 }
 
-VL53L0X_Error VL53L0X_WrDWord(VL53L0X_DEV Dev, uint8_t index, uint32_t data){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-	uint8_t deviceAddress;
-
-    deviceAddress = Dev->I2cDevAddr;
-
-	status_int = VL53L0X_write_dword(deviceAddress, index, data);
-
-	if (status_int != 0)
-		Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
+// 5. 4바이트(DWord) 쓰기 Wrapper
+VL53L0X_Error VL53L0X_WrDWord(VL53L0X_DEV Dev, uint8_t index, uint32_t data) {
+    uint8_t buff[4];
+    buff[0] = (data >> 24) & 0xFF;
+    buff[1] = (data >> 16) & 0xFF;
+    buff[2] = (data >> 8) & 0xFF;
+    buff[3] = data & 0xFF;
+    return VL53L0X_WriteMulti(Dev, index, buff, 4);
 }
 
-VL53L0X_Error VL53L0X_UpdateByte(VL53L0X_DEV Dev, uint8_t index, uint8_t AndData, uint8_t OrData){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-    uint8_t deviceAddress;
+// 6. 1바이트 읽기 Wrapper
+VL53L0X_Error VL53L0X_RdByte(VL53L0X_DEV Dev, uint8_t index, uint8_t *data) {
+    return VL53L0X_ReadMulti(Dev, index, data, 1);
+}
+
+// 7. 2바이트(Word) 읽기 Wrapper
+VL53L0X_Error VL53L0X_RdWord(VL53L0X_DEV Dev, uint8_t index, uint16_t *data) {
+    uint8_t buff[2];
+    VL53L0X_Error status = VL53L0X_ReadMulti(Dev, index, buff, 2);
+    if(status == VL53L0X_ERROR_NONE){
+        *data = (buff[0] << 8) | buff[1]; // MSB First
+    }
+    return status;
+}
+
+// 8. 4바이트(DWord) 읽기 Wrapper
+VL53L0X_Error VL53L0X_RdDWord(VL53L0X_DEV Dev, uint8_t index, uint32_t *data) {
+    uint8_t buff[4];
+    VL53L0X_Error status = VL53L0X_ReadMulti(Dev, index, buff, 4);
+    if(status == VL53L0X_ERROR_NONE){
+        *data = (buff[0] << 24) | (buff[1] << 16) | (buff[2] << 8) | buff[3];
+    }
+    return status;
+}
+
+// 9. Read-Modify-Write (UpdateByte)
+VL53L0X_Error VL53L0X_UpdateByte(VL53L0X_DEV Dev, uint8_t index, uint8_t AndData, uint8_t OrData) {
+    VL53L0X_Error status = VL53L0X_ERROR_NONE;
     uint8_t data;
 
-    deviceAddress = Dev->I2cDevAddr;
+    status = VL53L0X_RdByte(Dev, index, &data);
+    if (status != VL53L0X_ERROR_NONE) return status;
 
-    status_int = VL53L0X_read_byte(deviceAddress, index, &data);
-
-    if (status_int != 0)
-        Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    if (Status == VL53L0X_ERROR_NONE) {
-        data = (data & AndData) | OrData;
-        status_int = VL53L0X_write_byte(deviceAddress, index, data);
-
-        if (status_int != 0)
-            Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-    }
-
-    return Status;
+    data = (data & AndData) | OrData;
+    return VL53L0X_WrByte(Dev, index, data);
 }
 
-VL53L0X_Error VL53L0X_RdByte(VL53L0X_DEV Dev, uint8_t index, uint8_t *data){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-    uint8_t deviceAddress;
-
-    deviceAddress = Dev->I2cDevAddr;
-
-    status_int = VL53L0X_read_byte(deviceAddress, index, data);
-
-    if (status_int != 0)
-        Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
+// 10. 딜레이 함수 (밀리초 단위)
+VL53L0X_Error VL53L0X_PollingDelay(VL53L0X_DEV Dev) {
+    HAL_Delay(1); // 1ms 딜레이 (상황에 따라 늘려야 할 수도 있음)
+    return VL53L0X_ERROR_NONE;
 }
 
-VL53L0X_Error VL53L0X_RdWord(VL53L0X_DEV Dev, uint8_t index, uint16_t *data){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-    uint8_t deviceAddress;
-
-    deviceAddress = Dev->I2cDevAddr;
-
-    status_int = VL53L0X_read_word(deviceAddress, index, data);
-
-    if (status_int != 0)
-        Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
+// 11. Lock/Unlock (싱글 스레드 환경이면 빈 함수로 둬도 됨)
+VL53L0X_Error VL53L0X_LockSequenceAccess(VL53L0X_DEV Dev) {
+    return VL53L0X_ERROR_NONE;
 }
 
-VL53L0X_Error  VL53L0X_RdDWord(VL53L0X_DEV Dev, uint8_t index, uint32_t *data){
-    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
-    int32_t status_int;
-    uint8_t deviceAddress;
-
-    deviceAddress = Dev->I2cDevAddr;
-
-    status_int = VL53L0X_read_dword(deviceAddress, index, data);
-
-    if (status_int != 0)
-        Status = VL53L0X_ERROR_CONTROL_INTERFACE;
-
-    return Status;
-}
-
-#define VL53L0X_POLLINGDELAY_LOOPNB  250
-VL53L0X_Error VL53L0X_PollingDelay(VL53L0X_DEV Dev){
-    VL53L0X_Error status = VL53L0X_ERROR_NONE;
-    LOG_FUNCTION_START("");
-
-    const DWORD cTimeout_ms = 1;
-    HANDLE hEvent = CreateEvent(0, TRUE, FALSE, 0);
-    if(hEvent != NULL)
-    {
-        WaitForSingleObject(hEvent,cTimeout_ms);
-    }
-
-    LOG_FUNCTION_END(status);
-    return status;
+VL53L0X_Error VL53L0X_UnlockSequenceAccess(VL53L0X_DEV Dev) {
+    return VL53L0X_ERROR_NONE;
 }

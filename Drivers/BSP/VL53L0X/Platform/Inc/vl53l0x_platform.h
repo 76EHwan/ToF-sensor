@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright � 2015, STMicroelectronics International N.V.
+Copyright � 2015, STMicroelectronics International N.V.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -31,12 +31,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _VL53L0X_PLATFORM_H_
 
 #include "vl53l0x_def.h"
-#include "vl53l0x_platform_log.h"
-#include "vl53l0x_i2c_platform.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifdef VL53L0X_LOG_ENABLE
+#undef VL53L0X_LOG_ENABLE
+#endif
+
+#include <string.h> // strncpy 사용을 위해 필요
+
+// 문자열 복사 매크로 정의
+#define VL53L0X_COPYSTRING(str, cpy) strncpy((str), (cpy), VL53L0X_MAX_STRING_LENGTH_PLT)
 
 /**
  * @file vl53l0x_platform.h
