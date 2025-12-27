@@ -42,9 +42,6 @@ extern "C" {
 
 #include <string.h> // strncpy 사용을 위해 필요
 
-// 문자열 복사 매크로 정의
-#define VL53L0X_COPYSTRING(str, cpy) strncpy((str), (cpy), VL53L0X_MAX_STRING_LENGTH_PLT)
-
 /**
  * @file vl53l0x_platform.h
  *
