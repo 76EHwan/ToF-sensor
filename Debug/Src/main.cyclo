@@ -1,7 +1,8 @@
-../Src/main.c:68:13:MPU_Config	1
-../Src/main.c:106:13:CPU_CACHE_Enable	5
-../Src/main.c:114:13:LED_Blink	1
-../Src/main.c:127:5:main	1
-../Src/main.c:219:6:SystemClock_Config	4
-../Src/main.c:287:6:PeriphCommonClock_Config	2
-../Src/main.c:317:6:Error_Handler	1
+../Src/main.c:73:13:MPU_Config	1
+../Src/main.c:111:13:CPU_CACHE_Enable	5
+../Src/main.c:119:13:LED_Blink	1
+../Src/main.c:126:6:VL53L0X_Setup	2
+../Src/main.c:163:5:main	2
+../Src/main.c:276:6:SystemClock_Config	4
+../Src/main.c:346:6:PeriphCommonClock_Config	2
+../Src/main.c:377:6:Error_Handler	1

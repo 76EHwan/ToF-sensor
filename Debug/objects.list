@@ -41,6 +41,7 @@
 "./Src/debug.o"
 "./Src/dwt_delay.o"
 "./Src/gpio.o"
+"./Src/i2c.o"
 "./Src/lptim.o"
 "./Src/main.o"
 "./Src/memorymap.o"

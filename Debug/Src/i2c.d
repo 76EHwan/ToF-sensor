@@ -1,4 +1,4 @@
-Src/main.o: ../Src/main.c ../Inc/main.h \
+Src/i2c.o: ../Src/i2c.c ../Inc/i2c.h ../Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Inc/stm32h7xx_hal_conf.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
@@ -40,24 +40,8 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hcd.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h ../Inc/adc.h \
- ../Inc/main.h ../Inc/i2c.h ../Inc/lptim.h ../Inc/rtc.h ../Inc/spi.h \
- ../Inc/tim.h ../Inc/usart.h ../Inc/usb_otg.h ../Inc/gpio.h \
- ../Src/dwt_delay.h ../Drivers/BSP/ST7789/st7789.h \
- ../Drivers/BSP/ST7789/fonts.h ../main/Inc/init.h ../main/Inc/LSM6DS3TR.h \
- ../main/Inc/init.h ../main/Inc/sensor.h \
- ../main/Inc/../../MDK-ARM/Inc/lptim.h \
- ../main/Inc/../../MDK-ARM/Inc/main.h ../main/Inc/motor.h \
- ../main/Inc/drive.h ../main/Inc/../../MDK-ARM/Inc/custom_switch.h \
- ../main/Inc/../../MDK-ARM/Inc/custom_delay.h \
- ../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_api.h \
- ../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_api_strings.h \
- ../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_def.h \
- ../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_device.h \
- ../Drivers/BSP/VL53L0X/Platform/Inc/vl53l0x_types.h \
- ../Drivers/BSP/VL53L0X/Platform/Inc/vl53l0x_platform.h \
- ../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_def.h \
- ../Drivers/BSP/VL53L0X/Platform/Inc/vl53l0x_platform_log.h
+ ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h
+../Inc/i2c.h:
 ../Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Inc/stm32h7xx_hal_conf.h:
@@ -101,34 +85,3 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hcd.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
-../Inc/adc.h:
-../Inc/main.h:
-../Inc/i2c.h:
-../Inc/lptim.h:
-../Inc/rtc.h:
-../Inc/spi.h:
-../Inc/tim.h:
-../Inc/usart.h:
-../Inc/usb_otg.h:
-../Inc/gpio.h:
-../Src/dwt_delay.h:
-../Drivers/BSP/ST7789/st7789.h:
-../Drivers/BSP/ST7789/fonts.h:
-../main/Inc/init.h:
-../main/Inc/LSM6DS3TR.h:
-../main/Inc/init.h:
-../main/Inc/sensor.h:
-../main/Inc/../../MDK-ARM/Inc/lptim.h:
-../main/Inc/../../MDK-ARM/Inc/main.h:
-../main/Inc/motor.h:
-../main/Inc/drive.h:
-../main/Inc/../../MDK-ARM/Inc/custom_switch.h:
-../main/Inc/../../MDK-ARM/Inc/custom_delay.h:
-../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_api.h:
-../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_api_strings.h:
-../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_def.h:
-../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_device.h:
-../Drivers/BSP/VL53L0X/Platform/Inc/vl53l0x_types.h:
-../Drivers/BSP/VL53L0X/Platform/Inc/vl53l0x_platform.h:
-../Drivers/BSP/VL53L0X/Core/Inc/vl53l0x_def.h:
-../Drivers/BSP/VL53L0X/Platform/Inc/vl53l0x_platform_log.h:
